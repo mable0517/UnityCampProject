@@ -43,7 +43,7 @@ public class InteractionManager : MonoBehaviour
                     return;
                 }
 
-                if (emotion == EmotionType.Fear)
+                if (emotion == EmotionType.Fear || emotion == EmotionType.Embarassment)
                 {
                     HandleTargetInteraction(emotion, targetObj);
                     return;
@@ -224,6 +224,7 @@ public class InteractionManager : MonoBehaviour
         {
             case EmotionType.Attract: TriggerAttractTrap(); break;
             case EmotionType.Fear: FearEmotionEffect.UseOnSelf(); break;
+            case EmotionType.Embarassment: EmbarassmentEmotionEffect.UseOnSelf(); break;
             case EmotionType.Joy: GameManager.Instance.DisplayLog("나 자신에게 사용했다. 기분이 무척 좋아졌다!"); break;
             case EmotionType.Eat: GameManager.Instance.DisplayLog("자신의 팔을 꽉 깨물어 보았다. 아프다."); break;
             case EmotionType.Freeze:
@@ -265,6 +266,10 @@ public class InteractionManager : MonoBehaviour
         {
             case EmotionType.Fear:
                 FearEmotionEffect.UseOnTarget(target);
+                break;
+
+            case EmotionType.Embarassment:
+                EmbarassmentEmotionEffect.UseOnTarget(target);
                 break;
 
             case EmotionType.Joy:

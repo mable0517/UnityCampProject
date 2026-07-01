@@ -10,5 +10,6 @@ public enum EmotionType
     Shame = 6,      // 수치심
     Attract = 7,
     Eat = 8,
-    Freeze = 9
+    Freeze = 9,
+    Embarassment = 10
 }

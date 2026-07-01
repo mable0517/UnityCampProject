@@ -15,6 +15,7 @@ public class WordSelectMenu : MonoBehaviour
     public Button freezeButton;          // 얼리다(Freeze) 버튼
     public Button attractButton;          // 끌림(Attract) 버튼
     public Button fearButton;             // 두려움(Fear) 버튼
+    public Button embarassmentButton;     // 부끄러움(Embarassment) 버튼
 
     [Header("버튼 시각 효과 설정")]
     public Color selectedColor = new Color(0.4f, 1f, 0.4f, 1f); // ★ 선택되었을 때의 색상 (기본값: 연한 초록색)
@@ -39,6 +40,7 @@ public class WordSelectMenu : MonoBehaviour
         else if (wordStr == "얼리다" || wordStr.Equals("Freeze", System.StringComparison.OrdinalIgnoreCase)) clickedEmotion = EmotionType.Freeze;
         else if (wordStr == "끌림" || wordStr.Equals("Attract", System.StringComparison.OrdinalIgnoreCase)) clickedEmotion = EmotionType.Attract;
         else if (wordStr == "두려움" || wordStr.Equals("Fear", System.StringComparison.OrdinalIgnoreCase)) clickedEmotion = EmotionType.Fear;
+        else if (wordStr == "부끄러움" || wordStr.Equals("Embarassment", System.StringComparison.OrdinalIgnoreCase) || wordStr.Equals("Embarrassment", System.StringComparison.OrdinalIgnoreCase)) clickedEmotion = EmotionType.Embarassment;
 
         if (clickedEmotion != EmotionType.None)
         {
@@ -74,6 +76,7 @@ public class WordSelectMenu : MonoBehaviour
         UpdateButtonVisual(freezeButton, EmotionType.Freeze);
         UpdateButtonVisual(attractButton, EmotionType.Attract);
         UpdateButtonVisual(fearButton, EmotionType.Fear);
+        UpdateButtonVisual(embarassmentButton, EmotionType.Embarassment);
 
         // 3. 3개를 정확히 골랐을 때만 시작 버튼 활성화
         if (startGameButton != null)

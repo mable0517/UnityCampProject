@@ -8,7 +8,13 @@ public class EnemyTouchAttack : MonoBehaviour
         {
             // ★ [핵심] 만약 내가 현재 GameManager에 등록된 '동료(tamedEnemy)'라면 
             // 플레이어와 부딪히거나 겹쳐도 절대 죽이지 않고 그냥 통과시킵니다!
-            if (GameManager.Instance != null && GameManager.Instance.tamedEnemy == GetComponent<InteractiveObject>())
+            InteractiveObject interactiveObject = GetComponent<InteractiveObject>();
+            if (interactiveObject != null && interactiveObject.isHarmless)
+            {
+                return;
+            }
+
+            if (GameManager.Instance != null && GameManager.Instance.tamedEnemy == interactiveObject)
             {
                 return; // 안전하게 통과! 아무 일도 일어나지 않음
             }
@@ -26,7 +32,13 @@ public class EnemyTouchAttack : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (GameManager.Instance != null && GameManager.Instance.tamedEnemy == GetComponent<InteractiveObject>())
+            InteractiveObject interactiveObject = GetComponent<InteractiveObject>();
+            if (interactiveObject != null && interactiveObject.isHarmless)
+            {
+                return;
+            }
+
+            if (GameManager.Instance != null && GameManager.Instance.tamedEnemy == interactiveObject)
             {
                 return;
             }

@@ -6,6 +6,7 @@ public class InteractiveObject : MonoBehaviour
 {
     public ObjectType objectType;
     public bool isFrozen = false;
+    public bool isHarmless = false;
 
     [Header("Joy 기믹용 상태 변수")]
     public bool isTamed = false;       // 기쁨 마법을 맞아 마음을 연 상태
@@ -101,7 +102,7 @@ public class InteractiveObject : MonoBehaviour
             // 1. 적(Enemy)과 부딪혔을 때
             if (objectType == ObjectType.Enemy)
             {
-                if (isFrozen) return;
+                if (isFrozen || isHarmless) return;
 
                 // ★ [수정 및 기획 반영] 
                 // 내가 GameManager에 등록된 동료(tamedEnemy)이거나, 자체 변수가 변한 동료 상태라면
