@@ -72,8 +72,7 @@ public class PlayerGridMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Rigidbody를 이용한 이동
-        // 벽 Collider가 있으면 자동으로 막힘
+       
         rb.linearVelocity = moveInput * moveSpeed;
     }
 }
