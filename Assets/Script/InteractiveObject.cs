@@ -59,6 +59,16 @@ public class InteractiveObject : MonoBehaviour
     {
         isFrozen = true;
         if (spriteRenderer != null) spriteRenderer.color = Color.cyan;
+
+        // ★ [추가된 핵심 코드] 물을 얼렸을 때만 길을 뚫어줍니다!
+        if (objectType == ObjectType.Water)
+        {
+            Collider2D col = GetComponent<Collider2D>();
+            if (col != null)
+            {
+                col.isTrigger = true; // 물리적 충돌을 해제하여 플레이어가 위로 지나갈 수 있게 함
+            }
+        }
     }
 
     public void ApplyJoyTame()
