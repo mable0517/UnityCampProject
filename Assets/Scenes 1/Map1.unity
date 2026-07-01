@@ -615,7 +615,7 @@ MonoBehaviour:
   logPanel: {fileID: 234585075}
   logText: {fileID: 179709545}
   currentWordText: {fileID: 1473226725}
-  logDisplayTime: 1.5
+  logDisplayTime: 1
   myDeck: 
   currentWord: 0
   isSuperPowered: 0
@@ -785,7 +785,6 @@ GameObject:
   - component: {fileID: 186606803}
   - component: {fileID: 186606802}
   - component: {fileID: 186606801}
-  - component: {fileID: 186606804}
   - component: {fileID: 186606800}
   m_Layer: 7
   m_Name: Enemy
@@ -930,18 +929,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &186606804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186606799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8cfc8cf945f2d64a9632ade2ad83476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyTouchAttack
 --- !u!1 &206647803
 GameObject:
   m_ObjectHideFlags: 0
