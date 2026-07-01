@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class SceneFlowManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static SceneFlowManager Instance;
 
     public List<EmotionType> selectedEmotions = new List<EmotionType>();
     public int currentStage = 1;
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;  // GameManager 인스턴스 지정
+            Instance = this;  // SceneFlowManager 인스턴스 지정
             DontDestroyOnLoad(gameObject);  
         }
         else { Destroy(gameObject); }
