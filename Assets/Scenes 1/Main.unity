@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06d59132f1d61e44ad8da626a272e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WordDataCarrier
-  selectedWords: 
 --- !u!4 &110280833
 Transform:
   m_ObjectHideFlags: 0
@@ -820,11 +819,12 @@ MonoBehaviour:
   logPanel: {fileID: 0}
   logText: {fileID: 0}
   currentWordText: {fileID: 1615573901}
-  myDeck: 
-  currentWord: 0
+  logDisplayTime: 1.5
+  selectedEmotions: 
+  currentEmotion: -1
   isSuperPowered: 0
   hasKey: 0
-  menuSceneName: WordSelectMenuScene
+  tamedEnemy: {fileID: 0}
 --- !u!4 &1028637374
 Transform:
   m_ObjectHideFlags: 0
@@ -1224,6 +1224,7 @@ MonoBehaviour:
   eatButton: {fileID: 134928227}
   freezeButton: {fileID: 962885524}
   attractButton: {fileID: 1634407582}
+  fearButton: {fileID: 0}
   selectedColor: {r: 0.9609966, g: 1, b: 0.39999998, a: 1}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &1484629456
@@ -1993,6 +1994,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730636727}
   m_CullTransparentMesh: 1
+--- !u!1 &1823978667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1823978669}
+  - component: {fileID: 1823978668}
+  m_Layer: 0
+  m_Name: SceneFlowManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1823978668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823978667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d7d504a0219234ca166b4edd245071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneFlowManager
+  selectedEmotions: 
+  currentStage: 1
+--- !u!4 &1823978669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823978667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.96367, y: 3.664, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848612654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2249,3 +2296,4 @@ SceneRoots:
   - {fileID: 1848612658}
   - {fileID: 1213157783}
   - {fileID: 1028637374}
+  - {fileID: 1823978669}
