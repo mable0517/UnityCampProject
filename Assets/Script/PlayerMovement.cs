@@ -1,60 +1,101 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem; // 새로운 Input System 패키지 유지
 
-public class PlayerFreeMovement : MonoBehaviour
+public class PlayerGridMovement : MonoBehaviour
 {
     [Header("이동 설정")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 5f;      // 이동하는 속도
+    public float gridSize = 1f;       // ★ 요청하신 대로 1칸 단위 이동으로 변경!
+    public float moveDelay = 0.1f;    // 꾹 누르고 있을 때 확실하게 한 칸씩 끊어지게 하는 딜레이
 
-    private Rigidbody2D rb;
+    private bool isMoving = false;
     private Animator anim;
-    private SpriteRenderer spriteRenderer; // 스프라이트를 뒤집기 위해 추가
-    private Vector2 movement;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); // 컴포넌트 가져오기
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (rb != null) rb.gravityScale = 0f;
+        // 그리드 이동 시 물리 충돌체(Rigidbody2D)가 밀어내는 것을 방지하기 위해 
+        // Rigidbody2D가 있다면 이 스크립트가 켜질 때 Is Kinematic을 켜주는 것이 좋습니다.
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.simulated = true;
+        }
     }
 
     void Update()
     {
-        movement = Vector2.zero;
-
-        if (Keyboard.current != null)
+        // 이미 이동 중이 아닐 때만 다음 키 입력을 받음
+        if (!isMoving && Keyboard.current != null)
         {
-            if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed) movement.x = 1f;
-            else if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed) movement.x = -1f;
+            Vector3 targetPosition = transform.position;
+            bool hasInput = false;
 
-            if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.wKey.isPressed) movement.y = 1f;
-            else if (Keyboard.current.downArrowKey.isPressed || Keyboard.current.sKey.isPressed) movement.y = -1f;
+            // 1. 좌우 입력 확인
+            if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed)
+            {
+                targetPosition += Vector3.right * gridSize;
+                hasInput = true;
+                if (spriteRenderer != null) spriteRenderer.flipX = false; // Scale 안 건드리고 우측 조준
+            }
+            else if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed)
+            {
+                targetPosition += Vector3.left * gridSize;
+                hasInput = true;
+                if (spriteRenderer != null) spriteRenderer.flipX = true;  // Scale 안 건드리고 좌측 조준
+            }
+            // 2. 상하 입력 확인 (그리드 이동이므로 대각선 이동을 막기 위해 else if 처리)
+            else if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.wKey.isPressed)
+            {
+                targetPosition += Vector3.up * gridSize;
+                hasInput = true;
+            }
+            else if (Keyboard.current.downArrowKey.isPressed || Keyboard.current.sKey.isPressed)
+            {
+                targetPosition += Vector3.down * gridSize;
+                hasInput = true;
+            }
+
+            // 입력이 감지되었다면 이동 코루틴 실행
+            if (hasInput)
+            {
+                StartCoroutine(MoveToGrid(targetPosition));
+            }
         }
 
-        movement = movement.normalized;
-
+        // 3. 애니메이터에 상태 전달 (이동 중일 때 Run, 멈췄을 때 Idle)
         if (anim != null)
         {
-            anim.SetFloat("Speed", movement.sqrMagnitude);
-        }
-
-        // 수정된 부분: Scale을 건드리지 않고 이미지 방향만 뒤집기
-        if (spriteRenderer != null)
-        {
-            if (movement.x > 0)
-                spriteRenderer.flipX = false; // 오른쪽 볼 때 원본 유지
-            else if (movement.x < 0)
-                spriteRenderer.flipX = true;  // 왼쪽 볼 때 좌우 반전
+            anim.SetFloat("Speed", isMoving ? 1f : 0f);
         }
     }
 
-    void FixedUpdate()
+    // 부드럽게 목표 그리드로 이동시키는 코루틴
+    IEnumerator MoveToGrid(Vector3 targetPos)
     {
-        if (rb != null)
+        isMoving = true;
+
+        // 목표 위치에 완전히 도달할 때까지 프레임마다 이동
+        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            yield return null;
         }
+
+        // 정확한 그리드 좌표에 안착
+        transform.position = targetPos;
+
+        // [중요 기준] 이동 완료 후 잠깐 대기하여, 키를 꾹 눌러도 1칸씩 확실히 끊어지는 손맛 부여
+        if (moveDelay > 0f)
+        {
+            yield return new WaitForSeconds(moveDelay);
+        }
+
+        isMoving = false;
     }
 }
