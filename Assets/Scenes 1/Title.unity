@@ -879,6 +879,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: e1c622b1773493b4da59e7a71c739096, type: 3}
   - soundName: BGM_GameOver
     clip: {fileID: 8300000, guid: b780ba07367e5c24b97f4d4946e28599, type: 3}
+  - soundName: BGM_GameClear
+    clip: {fileID: 8300000, guid: f1d923daef670254187c60878f16d465, type: 3}
   sfxSounds:
   - soundName: SFX_Hit
     clip: {fileID: 8300000, guid: 633e89fce6e30ca4ca79ff94171a5127, type: 3}

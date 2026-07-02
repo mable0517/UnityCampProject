@@ -1300,7 +1300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa7c45e6367b7d449a5c8743da0fbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BGMTrigger
-  bgmName: BGM_GameOver
+  bgmName: BGM_GameClear
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

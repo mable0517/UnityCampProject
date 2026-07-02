@@ -64,7 +64,7 @@ public class PlayerGridMovement : MonoBehaviour
             stepTimer -= Time.deltaTime;
             if (stepTimer <= 0f)
             {
-                if (SoundManager.instance != null) SoundManager.instance.PlayWalk();
+                if (SoundManager.instance != null) SoundManager.instance.PlaySFX("SFX_Walk");
                 stepTimer = stepInterval; // 타이머 초기화
             }
         }
