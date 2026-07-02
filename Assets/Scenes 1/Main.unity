@@ -2018,6 +2018,7 @@ GameObject:
   - component: {fileID: 1730636731}
   - component: {fileID: 1730636730}
   - component: {fileID: 1730636729}
+  - component: {fileID: 1730636732}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -2042,8 +2043,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 525, y: -168}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 680, y: -402}
+  m_SizeDelta: {x: 398.0654, y: 158.4525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1730636729
 MonoBehaviour:
@@ -2121,8 +2122,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -3332771286441957219, guid: 4cf3ee69937710747b4846ee2d64ad75, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2139,6 +2140,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730636727}
   m_CullTransparentMesh: 1
+--- !u!114 &1730636732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730636727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 0, y: -15}
+  m_UseGraphicAlpha: 0
 --- !u!1 &1823978667
 GameObject:
   m_ObjectHideFlags: 0
