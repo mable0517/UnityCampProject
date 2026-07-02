@@ -475,6 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa7c45e6367b7d449a5c8743da0fbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BGMTrigger
+  bgmName: BGM_Menu
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
