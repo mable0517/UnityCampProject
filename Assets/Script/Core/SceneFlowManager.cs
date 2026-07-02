@@ -20,11 +20,11 @@ public class SceneFlowManager : MonoBehaviour
         else { Destroy(gameObject); }
     }
 
-    public void GoToSelect() { selectedEmotions.Clear(); SceneManager.LoadScene("Select"); }    // 감정 선택 화면으로 이동
+    public void GoToSelect() { selectedEmotions.Clear(); SceneManager.LoadScene("Main"); }    // 감정 선택 화면으로 이동
     public void LoadScene(string sceneName) { SceneManager.LoadScene(sceneName); }
-    public void StartStage() { SceneManager.LoadScene("Stage" + currentStage); } // 특정 스테이지로 이동
+    public void StartStage() { SceneManager.LoadScene("Map" + currentStage); } // 특정 스테이지로 이동
     public void ClearStage() { SceneManager.LoadScene("End"); }     // 스테이지 클리어
-    public void RetryStage() { SceneManager.LoadScene("Stage" + currentStage); }  // 스테이지 재시도
+    public void RetryStage() { SceneManager.LoadScene("Map" + currentStage); }  // 스테이지 재시도
     public void GoToTitle() { SceneManager.LoadScene("Title"); }  // 시작 화면 이동
     public void QuitGame() { Application.Quit(); }  // 게임 종료
     public void SetSelectedEmotions(List<EmotionType> emotions) { selectedEmotions = new List<EmotionType>(emotions); } // 선택한 감정 목록
