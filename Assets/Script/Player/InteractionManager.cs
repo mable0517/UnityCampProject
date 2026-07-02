@@ -5,6 +5,7 @@ public class InteractionManager : MonoBehaviour
 {
     private SelectTile selectTile;
     public LayerMask interactionLayer;
+    private bool isDialoguePlaying = false;
 
     void Start()
     {
@@ -14,6 +15,8 @@ public class InteractionManager : MonoBehaviour
     void Update()
     {
         if (Keyboard.current == null || selectTile == null) return;
+
+        if (isDialoguePlaying) return;
 
         if (selectTile.selectorVisual != null && selectTile.selectorVisual.activeSelf && Keyboard.current.xKey.wasPressedThisFrame)
         {
@@ -278,6 +281,31 @@ public class InteractionManager : MonoBehaviour
         GameManager.Instance.DisplayLog("과일의 괴력을 발휘해 대상을 강하게 밀쳐버렸습니다!");
     }
 
+    private System.Collections.IEnumerator PlayJoyDialogue()
+    {
+        isDialoguePlaying = true;
+
+        GameManager.Instance.ShowDialogueLog("엘프: \"하하하 덕분에 잘 웃었군, 나도 재밌는 얘기를 들려주지. 낙타의 부모님은 누군지 아나?\"");
+        yield return WaitForXPress();
+
+        GameManager.Instance.ShowDialogueLog("주인공: \"????\"");
+        yield return WaitForXPress();
+
+        GameManager.Instance.ShowDialogueLog("엘프: \"바로 늑대라네. 늑대가 낙타났다!! 껄껄\"");
+        yield return WaitForXPress();
+
+        GameManager.Instance.HideDialogueLog();
+        isDialoguePlaying = false;
+    }
+
+    // 현재 줄을 띄운 프레임의 X 입력은 무시하고, 다음 X 입력을 기다린다
+    private System.Collections.IEnumerator WaitForXPress()
+    {
+        yield return null;
+        while (!(Keyboard.current != null && Keyboard.current.xKey.wasPressedThisFrame))
+            yield return null;
+    }
+
     private void HandleTargetInteraction(EmotionType word, InteractiveObject target)
     {
         // 1. 꽁꽁 얼어붙은 상태면 마법 튕겨냄 (Hit 사운드)
@@ -290,9 +318,10 @@ public class InteractionManager : MonoBehaviour
 
         // 2. 야생 적을 건드려서 죽게 되는 치명적 행동인지 체크 (Eat, Attract 실패 시)
         bool isDeathTrap = (word == EmotionType.Eat || word == EmotionType.Attract) && target.objectType == ObjectType.Enemy && GameManager.Instance.tamedEnemy != target;
+        bool shouldPlayInteractionSound = !(word == EmotionType.Eat && target.objectType == ObjectType.Poison);
 
         // 3. ★ 모든 상호작용 발생 시 무조건 사운드 1회 재생 (죽을 땐 Trap, 나머진 팀원들의 새 마법을 포함해 모두 Interaction)
-        if (SoundManager.instance != null)
+        if (shouldPlayInteractionSound && SoundManager.instance != null)
         {
             if (isDeathTrap) SoundManager.instance.PlaySFX("SFX_Trap");
             else SoundManager.instance.PlaySFX("SFX_Interaction");
@@ -302,6 +331,7 @@ public class InteractionManager : MonoBehaviour
         switch (word)
         {
             case EmotionType.Joy:
+                if (target.objectType == ObjectType.Elf) { StartCoroutine(PlayJoyDialogue()); break; }
                 if (target.objectType == ObjectType.Enemy) GameManager.Instance.TameEnemy(target);
                 else if (target.objectType == ObjectType.Wall) GameManager.Instance.DisplayLog("벽에 예쁜 꽃이 피어났습니다! 기분 좋은 향기가 맴돕니다.");
                 else if (target.objectType == ObjectType.Water) GameManager.Instance.DisplayLog("물이 영롱하게 반짝입니다! 보기만 해도 마음이 정화되는 기분입니다.");
@@ -311,7 +341,11 @@ public class InteractionManager : MonoBehaviour
                 break;
 
             case EmotionType.Eat:
-                if (target.objectType == ObjectType.Fruit)
+                if (target.objectType == ObjectType.Poison)
+                {
+                    GameManager.Instance.TriggerPoisonGameOver();
+                }
+                else if (target.objectType == ObjectType.Fruit)
                 {
                     GameManager.Instance.DisplayLog("신비한 과일을 먹었습니다! 몸에서 엄청난 괴력이 샘솟습니다!");
                     GameManager.Instance.isSuperPowered = true;
@@ -335,6 +369,10 @@ public class InteractionManager : MonoBehaviour
                 if (target.objectType == ObjectType.Water)
                 {
                     GameManager.Instance.DisplayLog("물이 꽁꽁 얼어붙어 위를 걸어갈 수 있게 되었습니다!");
+                }
+                else if (target.objectType == ObjectType.Elf)
+                {
+                    GameManager.Instance.DisplayLog("엘프가 꽁꽁 얼어버렸다");
                 }
                 else if (target.objectType == ObjectType.Enemy)
                 {

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-public enum ObjectType { Wall, Fruit, Exit, Key, Water, Enemy, NPC }
+public enum ObjectType { Wall, Fruit, Exit, Key, Water, Enemy, NPC, Poison, Elf }
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI logText;
     public TextMeshProUGUI currentWordText;
     public float logDisplayTime = 1.5f; // ★ 이벤트 창이 떠 있는 시간 (인스펙터에서 수정 가능)
+    public GameObject titleConfirmButton;
+    public TextMeshProUGUI titleConfirmButtonText;
 
     [Header("가져온 단어 목록")]
     public List<EmotionType> selectedEmotions = new List<EmotionType>();
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
             logText.text = "";
             logText.gameObject.SetActive(false);
         }
+        SetupTitleConfirmButton();
 
         var playerMovement = Object.FindFirstObjectByType<PlayerGridMovement>();
         if (playerMovement != null)
@@ -122,6 +125,16 @@ public class GameManager : MonoBehaviour
 
     public void DisplayLog(string message)
     {
+        ShowLog(message, true);
+    }
+
+    private void DisplayPersistentLog(string message)
+    {
+        ShowLog(message, false);
+    }
+
+    private void ShowLog(string message, bool autoClose)
+    {
         if (logText != null)
         {
             logText.gameObject.SetActive(true);
@@ -130,8 +143,13 @@ public class GameManager : MonoBehaviour
         if (logPanel != null) logPanel.SetActive(true);
 
         if (logTimerCoroutine != null) StopCoroutine(logTimerCoroutine);
-        // ★ 3초에서 변수(기본 1.5초)로 단축
-        logTimerCoroutine = StartCoroutine(LogAutoCloseRoutine(logDisplayTime));
+        logTimerCoroutine = null;
+
+        if (autoClose)
+        {
+            // ★ 3초에서 변수(기본 1.5초)로 단축
+            logTimerCoroutine = StartCoroutine(LogAutoCloseRoutine(logDisplayTime));
+        }
     }
 
     private IEnumerator LogAutoCloseRoutine(float delay)
@@ -144,6 +162,36 @@ public class GameManager : MonoBehaviour
     {
         if (logPanel != null) logPanel.SetActive(false);
         if (logText != null) logText.gameObject.SetActive(false);
+    }
+
+    // 대화용: 자동으로 닫히지 않고 X 입력으로 넘길 때까지 유지
+    public void ShowDialogueLog(string message) { ShowLog(message, false); }
+    public void HideDialogueLog() { CloseLog(); }
+
+    private void SetupTitleConfirmButton()
+    {
+        if (titleConfirmButton == null)
+        {
+            GameObject foundButton = GameObject.Find("RestartButton");
+            if (foundButton != null) titleConfirmButton = foundButton;
+        }
+
+        if (titleConfirmButtonText == null && titleConfirmButton != null)
+        {
+            titleConfirmButtonText = titleConfirmButton.GetComponentInChildren<TextMeshProUGUI>(true);
+        }
+
+        if (titleConfirmButtonText != null) titleConfirmButtonText.text = "Restart";
+        if (titleConfirmButton != null) titleConfirmButton.SetActive(false);
+    }
+
+    public void TriggerPoisonGameOver()
+    {
+        SetPlayerInputLock(true);
+        SetupTitleConfirmButton();
+
+        DisplayPersistentLog("<color=red>모르는 게 약이지만, 이건 독약입니다.</color>\n\n다시 시작하시겠습니까?");
+        if (titleConfirmButton != null) titleConfirmButton.SetActive(true);
     }
 
     public void SetPlayerInputLock(bool lockState)
