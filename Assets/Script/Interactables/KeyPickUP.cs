@@ -16,6 +16,8 @@ public class KeyPickup : MonoBehaviour
         {
             if (GameManager.Instance != null && !GameManager.Instance.hasKey)
             {
+                if (SoundManager.instance != null) SoundManager.instance.PlaySFX("SFX_Interaction");
+
                 GameManager.Instance.hasKey = true;
                 GameManager.Instance.DisplayLog("찰칵! 바닥에 놓인 열쇠를 주웠습니다.");
 
